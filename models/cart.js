@@ -1,3 +1,4 @@
+const { static } = require('express');
 const fs = require('fs');
 const path = require('path');
 
@@ -58,6 +59,17 @@ module.exports = class Cart {
           }
         });
       }
+    });
+  }
+
+  static getCart(cb) {
+    fs.readFile(p, (err, fileContent) => {
+      if (err) {
+        console.log(err);
+        return cb(null);
+      }
+      const cart = JSON.parse(fileContent);
+      cb(cart);
     });
   }
 };
