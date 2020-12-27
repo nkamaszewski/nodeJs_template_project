@@ -56,3 +56,9 @@ exports.getProducts = (req, res, next) => {
     }); // cause path is /view setted in app.js
   });
 };
+
+exports.postDeleteProduct = (req, res, next) => {
+  const { productId } = req.body;
+  Product.deleteById(productId);
+  res.redirect('/admin/products');
+};
