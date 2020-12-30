@@ -2,10 +2,10 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then((products) => {
       res.render('shop/product-list', {
-        prods: rows,
+        prods: products,
         pageTitle: 'All products',
         path: '/products',
       }); // cause path is /view setted in app.js
@@ -15,22 +15,22 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findById(prodId)
-    .then(([product]) => {
+  Product.findByPk(prodId)
+    .then((product) => {
       res.render('shop/product-detail', {
-        pageTitle: product[0].title,
+        pageTitle: product.title,
         path: '/products',
-        product: product[0],
+        product: product,
       });
     })
     .catch((err) => console.log(err));
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then((products) => {
       res.render('shop/index', {
-        prods: rows,
+        prods: products,
         pageTitle: 'Shop',
         path: '/',
       }); // cause path is /view setted in app.js
