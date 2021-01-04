@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
 const mongoConnect = require('./util/database').mongoConnect;
+const User = require('./models/user');
 
 const app = express();
 
@@ -18,13 +19,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public'))); // allow serves static from public folder (not node.js routing res.sendFile files)
 
 app.use((req, res, next) => {
-  // User.findByPk(1)
-  //   .then((user) => {
-  //     req.user = user; // adding user to every req middleware executed below
-  //     next();
-  //   })
-  //   .catch((err) => console.log(err));
-  next();
+  User.findById('5ff392afc807755889cc988a')
+    .then((user) => {
+      req.user = new User(user.name, user.email, user.cart, user._id); // adding user to every req middleware executed below
+      next();
+    })
+    .catch((err) => console.log(err));
 });
 
 app.use('/admin', adminRoutes);
